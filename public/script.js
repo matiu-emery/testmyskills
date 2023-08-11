@@ -1,7 +1,7 @@
 let xp = 0
 let health = 100
 let gold = 100
-let currentWeapon = 0
+let patuOnainei = 0
 let whawhai
 let monsterHealth = 0 // Initialize monsterHealth
 let inventory = ['Rakau ']
@@ -38,7 +38,7 @@ const taniwha = [
     hauora: 60
   },
   {
-    ingoa: 'Pirawai',
+    ingoa: 'Tarakona',
     taumata: 20,
     hauora: 300
   },
@@ -65,10 +65,28 @@ const ngaWaahi = [
     text: 'Ka tomo koe ki te ana. Ka kite koe i etahi taniwha',
   },
   {
-    ingoa: 'Ana',
-    'button text': ['Whawhai', 'Karohia', 'Oma'],
+    ingoa: 'Whawhai',
+    'button text': ['Whakaeke', 'Karohia', 'Oma'],
     'button functions': [Whakaeke, Karohia, HokiKiTeTaone],
     text: 'Kei te whawhai koe he taniwha',
+  },
+  {
+    ingoa: 'Patua Taniwha',
+    'button text': ['Haere ki te taone tapawha', 'Haere ki te taone tapawha', 'Haere ki te taone tapawha'],
+    'button functions': [HokiKiTeTaone, HokiKiTeTaone, HokiKiTeTaone],
+    text: 'Ka tangi te taniwha "AHHHHHHHHHHHH!!" a ka mate. I whiwhi koe i te wheako me i rapu koe i te koura',
+  },
+  {
+    ingoa: 'I ngaro koe!!',
+    'button text': ['TUKURUA?','TUKURUA?','TUKURUA?'],
+    'button functions': [TimataAno,TimataAno,TimataAno],
+    text: 'I Mate Koe!!.💀👻',
+  },
+  {
+    ingoa: 'I toa koe!!',
+    'button text': ['',],
+    'button functions': [TimataAno,TimataAno,TimataAno],
+    text: 'I hinga koe te Tarakona!! I TOA KOE TE KEMU!!👊💪🎉🎉',
   }
 ]
 
@@ -83,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const goldText = document.querySelector('#goldText')
   const monsterStats = document.querySelector('#monsterStats')
   const monsterNameText = document.querySelector('#monsterName')
-  const monsterHealthText = document.querySelector('#monsterHealth')
+const monsterHealthText = document.querySelector('#monsterHealth')
 
   // buttons Initialized
   button1.onclick = HaereKiTeToa
@@ -93,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // update
 function whakahou(waahi) {
+  monsterStats.style.display = 'none'
   button1.innerText = waahi['button text'][0]
   button2.innerText = waahi['button text'][1]
   button3.innerText = waahi['button text'][2]
@@ -136,14 +155,14 @@ function HokoHauora() {
 
 //Buying weapon 
 function HokoPatu() {
-  if (currentWeapon < patu.length - 1) {
+  if (patuOnainei < patu.length - 1) {
     if (gold >= 30) {
       gold -= 30
-      currentWeapon ++
+      patuOnainei ++
       goldText.innerText = gold
-      let newWeapon = patu[currentWeapon].ingoa + ' '
-      text.innerText = 'I hoko koe he ' + newWeapon + '.'
-      inventory.push(newWeapon)
+      let patuHou = patu[patuOnainei].ingoa + ' '
+      text.innerText = 'I hoko koe he ' + patuHou + '.'
+      inventory.push(patuHou)
       text.innerText += ' Kei roto i to rarangi ingoa kei a koe ' + inventory
     }
     else {
@@ -162,8 +181,8 @@ function HokonaAtuToPatu() {
   if (inventory.length > 1 ) {
     gold += 15
     goldText.innerText = gold
-    let currentWeapon = inventory.shift()
-    text.innerText = 'I hoko atu koe te  ' + currentWeapon + '.'
+    let patuOnainei = inventory.shift()
+    text.innerText = 'I hoko atu koe te  ' + patuOnainei + '.'
     text.innerText = ' Kei roto i to rarangi ingoa kei a koe ' + inventory
   }
   else {
@@ -194,16 +213,61 @@ function HaereWhawhai() {
   whakahou(ngaWaahi[3])
   monsterHealth = taniwha[whawhai].hauora
   monsterStats.style.display = 'block'
-  monsterNameText.innerText = taniwha[whawhai].ingoa
-  monsterHealthText.innerText = monsterHealth
+  monsterName.textContent = taniwha[whawhai].ingoa
+  monsterHealth.innerText = monsterHealth
 }
 
 //Attack
 function Whakaeke() {
-  
+  text.innerText = 'I whakaeke te ' + taniwha[whawhai].ingoa
+  text.innerText += ' I whakaeke koe me to ' + patu[patuOnainei].ingoa + '.'
+  health -= taniwha[whawhai].taumata
+  monsterHealth -= patu[patuOnainei].mana + Math.floor(Math.random() * xp) + 1
+  healthText.innerText = health
+  monsterHealth.innerText = monsterHealth
+  if (health <= 0) {
+    Ngaro()
+  } else if (monsterHealth <= 0 ){
+   whawhai === 2 ? ToaKemu() : HingaTaniwha()
+  }
 }
 
 //Dodge
 function Karohia() {
-  
+  text.innerText = 'I korohia koe te whakaeke o te ' + taniwha[whawhai].ingoa + '.'
+
 }
+
+//Monster defeated
+function HingaTaniwha() {
+  gold += Math.floor(taniwha[whawhai].taumata * 6.7)
+  xp += taniwha[whawhai].taumata
+  goldText.innerText = gold
+  xpText.innerText = xp
+  whakahou(ngaWaahi[4])
+}
+
+//Lose
+function Ngaro() {
+  whakahou(ngaWaahi[5])
+}
+
+// won game
+function ToaKemu() {
+  whakahou(ngaWaahi[6])
+}
+
+// Restart Game
+function TimataAno() {
+  xp = 0
+  health = 100
+  gold = 100
+  patuOnainei = 0
+  inventory = ['Rakau ']
+  goldText.innerText = gold
+  healthText.innerText = health
+  xpText.innerText = xp
+  HokiKiTeTaone()
+}
+
+
