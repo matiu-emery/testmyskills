@@ -53,7 +53,7 @@ const taniwha = [
     hauora: 15
   },
   {
-    ingoa: 'Kararehe',
+    ingoa: 'Taniwha',
     taumata: 8,
     hauora: 60
   },
@@ -70,7 +70,7 @@ const ngaWaahi = [
     ingoa: 'Toene tapawha',
     'button text': ['Haere ki te toa', 'Haere ki te ana', 'Whawhai te tarakana'],
     'button functions': [HaereKiTeToa, HaereKiTeAna, WhawhaiTarakona],
-    text: 'Kei te tapawha taone koe, ka kite koe i tetahi tohu e kii ana he "Toa"',
+    text: 'Kei te tapawha taone koe, ka kite koe i tetahi tohu e kii ana "Toa Hokhoko"',
   },
   {
     ingoa: 'Toa',
@@ -80,14 +80,14 @@ const ngaWaahi = [
   },
   {
     ingoa: 'Ana',
-    'button text': ['Whawhai parawai', 'Whawhai kararehe', 'Haere ki te taone tapawha'],
+    'button text': ['Whawhai parawai', 'Whawhai Taniwha', 'Haere ki te taone tapawha'],
     'button functions': [WhawhaiPirawai, WhawhaiKararehe, HokiKiTeTaone],
     text: 'Ka tomo koe ki te ana. Ka kite koe i etahi taniwha',
   },
   {
     ingoa: 'Whawhai',
-    'button text': ['Whakaeke', 'Karohia', 'Oma'],
-    'button functions': [Whakaeke, Karohia, HokiKiTeTaone],
+    'button text': ['Whakatoke', 'Karohia', 'Oma'],
+    'button functions': [Whakatoke, Karohia, HokiKiTeTaone],
     text: 'Kei te whawhai koe he taniwha',
   },
   {
@@ -164,7 +164,7 @@ function HokoPatu() {
       let patuHou = patu[patuOnainei].ingoa + ' '
       text.innerText = 'I hoko koe he ' + patuHou + '.'
       inventory.push(patuHou)
-      text.innerText += ' Kei roto i to rarangi ingoa kei a koe ' + inventory
+      text.innerText += ' Kei roto i to rarangi ingoa kei a koe he ' + inventory
     }
     else {
       text.innerText = 'Kaore koe i te nui o te koura hei hoko patu'
@@ -219,10 +219,16 @@ function HaereWhawhai() {
 }
 
 //Attack
-function Whakaeke() {
-  text.innerText = 'I whakaeke te ' + taniwha[whawhai].ingoa;
-  text.innerText += ' I whakaeke koe me to ' + patu[patuOnainei].ingoa + '.'
-  health -= taniwha[whawhai].taumata
+function Whakatoke() {
+  text.innerText = 'I Whakatoke te ' + taniwha[whawhai].ingoa + '!!.';
+  text.innerText += ' A i Whakatoke koe me to ' + patu[patuOnainei].ingoa + '.'
+
+  if (KuaPatuaTaniwha()) {
+  health -= TikinaTeUaraWhakatokeTaniwha(taniwha[whawhai].taumata)
+  }else {
+    text.innerText += ' Kaore koe i tukati i te taniwha.'
+  }
+
   monsterHealth -= patu[patuOnainei].mana + Math.floor(Math.random() * xp) + 1
   healthText.innerText = health.toString()  // Convert to string
   monsterHealthText.innerText = monsterHealth.toString() // Convert to string
@@ -231,12 +237,27 @@ function Whakaeke() {
   } else if (monsterHealth <= 0) {
     whawhai === 2 ? ToaKemu() : HingaTaniwha()
   }
+  if (Math.random() <= .1 && inventory.length !== 1 ) {
+    text.innerText += ' I pakaru to ' + inventory.pop() 
+    patuOnainei-- 
+  }
 }
 
+//Get monster attack value
+function TikinaTeUaraWhakatokeTaniwha(taumata) {
+  let hit = (taumata * 5) - (Math.floor(Math.random() * xp))
+  console.log(hit)
+  return hit
+}
+
+//is monster hit
+function KuaPatuaTaniwha() {
+  return Math.random() > .2  || health < 20 
+}
 
 //Dodge
 function Karohia() {
-  text.innerText = 'I korohia koe te whakaeke o te ' + taniwha[whawhai].ingoa + '.'
+  text.innerText = 'I korohia koe te whakatoke o te ' + taniwha[whawhai].ingoa + '.'
 
 }
 
@@ -271,5 +292,3 @@ function TimataAno() {
   xpText.innerText = xp
   HokiKiTeTaone()
 }
-
-
