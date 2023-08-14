@@ -5,6 +5,26 @@ let patuOnainei = 0
 let whawhai
 let monsterHealth = 0 // Initialize monsterHealth
 let inventory = ['Rakau ']
+let monsterHealthText
+
+// Initialize buttons
+document.addEventListener('DOMContentLoaded', () => {
+  const button1 = document.querySelector('#button1')
+  const button2 = document.querySelector('#button2')
+  const button3 = document.querySelector('#button3')
+  const text = document.querySelector('#text')
+  const xpText = document.querySelector('#xpText')
+  const healthText = document.querySelector('#healthText')
+  const goldText = document.querySelector('#goldText')
+  const monsterStats = document.querySelector('#monsterStats')
+  const monsterNameText = document.querySelector('#monsterName')
+  monsterHealthText = document.querySelector('#monsterHealth')
+
+  // buttons Initialized
+  button1.onclick = HaereKiTeToa
+  button2.onclick = HaereKiTeAna
+  button3.onclick = WhawhaiTarakona
+})
 
 //weapon list
 const patu = [
@@ -84,30 +104,11 @@ const ngaWaahi = [
   },
   {
     ingoa: 'I toa koe!!',
-    'button text': ['',],
+    'button text': ['TUKURUA?','TUKURUA?','TUKURUA?'],
     'button functions': [TimataAno,TimataAno,TimataAno],
     text: 'I hinga koe te Tarakona!! I TOA KOE TE KEMU!!👊💪🎉🎉',
   }
 ]
-
-// Initialize buttons
-document.addEventListener('DOMContentLoaded', () => {
-  const button1 = document.querySelector('#button1')
-  const button2 = document.querySelector('#button2')
-  const button3 = document.querySelector('#button3')
-  const text = document.querySelector('#text')
-  const xpText = document.querySelector('#xpText')
-  const healthText = document.querySelector('#healthText')
-  const goldText = document.querySelector('#goldText')
-  const monsterStats = document.querySelector('#monsterStats')
-  const monsterNameText = document.querySelector('#monsterName')
-const monsterHealthText = document.querySelector('#monsterHealth')
-
-  // buttons Initialized
-  button1.onclick = HaereKiTeToa
-  button2.onclick = HaereKiTeAna
-  button3.onclick = WhawhaiTarakona
-})
 
 // update
 function whakahou(waahi) {
@@ -212,25 +213,26 @@ function WhawhaiTarakona() {
 function HaereWhawhai() {
   whakahou(ngaWaahi[3])
   monsterHealth = taniwha[whawhai].hauora
+  monsterHealthText.innerText = monsterHealth // Corrected line
   monsterStats.style.display = 'block'
   monsterName.textContent = taniwha[whawhai].ingoa
-  monsterHealth.innerText = monsterHealth
 }
 
 //Attack
 function Whakaeke() {
-  text.innerText = 'I whakaeke te ' + taniwha[whawhai].ingoa
+  text.innerText = 'I whakaeke te ' + taniwha[whawhai].ingoa;
   text.innerText += ' I whakaeke koe me to ' + patu[patuOnainei].ingoa + '.'
   health -= taniwha[whawhai].taumata
   monsterHealth -= patu[patuOnainei].mana + Math.floor(Math.random() * xp) + 1
-  healthText.innerText = health
-  monsterHealth.innerText = monsterHealth
+  healthText.innerText = health.toString()  // Convert to string
+  monsterHealthText.innerText = monsterHealth.toString() // Convert to string
   if (health <= 0) {
     Ngaro()
-  } else if (monsterHealth <= 0 ){
-   whawhai === 2 ? ToaKemu() : HingaTaniwha()
+  } else if (monsterHealth <= 0) {
+    whawhai === 2 ? ToaKemu() : HingaTaniwha()
   }
 }
+
 
 //Dodge
 function Karohia() {
