@@ -93,7 +93,7 @@ const ngaWaahi = [
   {
     ingoa: 'Patua Taniwha',
     'button text': ['Haere ki te taone tapawha', 'Haere ki te taone tapawha', 'Haere ki te taone tapawha'],
-    'button functions': [HokiKiTeTaone, HokiKiTeTaone, HokiKiTeTaone],
+    'button functions': [HokiKiTeTaone, HokiKiTeTaone, HeekiAranga],
     text: 'Ka tangi te taniwha "AHHHHHHHHHHHH!!" a ka mate. I whiwhi koe i te wheako me i rapu koe i te koura',
   },
   {
@@ -107,6 +107,12 @@ const ngaWaahi = [
     'button text': ['TUKURUA?','TUKURUA?','TUKURUA?'],
     'button functions': [TimataAno,TimataAno,TimataAno],
     text: 'I hinga koe te Tarakona!! I TOA KOE TE KEMU!!👊💪🎉🎉',
+  },
+  {
+    ingoa: 'Heeki Aranga',
+    'button text': ['2', '8', 'Hoki ki te taone'],
+    'button functions': [WhiwhiRua,WhiwhiWaru,HokiKiTeTaone],
+    text: 'I rapu koe he kemu huna. Tīpakohia he tau kei runga. Tekau tau ka tohua matapōkeretia i waenga i te 0 me te 10. Ki te ōrite te tau e kōwhiria e koe ki tētahi o ngā tau matapōkere, ka toa koe!',
   }
 ]
 
@@ -291,4 +297,44 @@ function TimataAno() {
   healthText.innerText = health
   xpText.innerText = xp
   HokiKiTeTaone()
+}
+
+function HeekiAranga() {
+  whakahou(ngaWaahi[7])
+}
+
+
+function WhiwhiRua() {
+  pick(2)
+}
+
+function WhiwhiWaru() {
+  pick(8)
+}
+
+function pick(guess) {
+  let numbers = []
+
+  while (numbers.length < 10) {
+    numbers.push(Math.floor(Math.random() * 11))
+  }
+
+  text.innerText = 'I whiria koe ' + guess + '. Anei nga tau matapōkere:\n'
+
+  for (let i = 0; i < 10; i++) {
+    text.innerText += numbers[i] + '\n'
+  }
+
+  if (numbers.indexOf(guess) !== -1) {
+    text.innerText += 'He tika koe! I toa koe 20 koura'
+    gold += 20
+    goldText.innerText = gold
+  }else {
+    text.innerText += 'Kahore koe he tika! I ngaro koe 10 hauora'
+    health -= 10
+    healthText.innerText = health
+    if (health <= 0){
+      Ngaro()
+    }
+  }
 }
